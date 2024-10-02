@@ -1,8 +1,10 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, unused_field
+
+import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:project/profile.dart';
+import 'package:image_picker/image_picker.dart';
 
 class Quiz extends StatefulWidget {
   const Quiz({super.key});
@@ -151,27 +153,38 @@ class _QuizState extends State<Quiz> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Container(
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: 16.0, horizontal: 60),
-                                  color: Color(0xFFF5F9FF),
-                                  child: Text(
-                                    "About",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 18,
+                                Expanded(
+                                  child: Container(
+                                    alignment: Alignment.center,
+                                    padding:
+                                        EdgeInsets.symmetric(vertical: 16.0),
+                                    color: Color(0xFFF5F9FF),
+                                    child: Text(
+                                      "About",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 18,
+                                      ),
                                     ),
                                   ),
                                 ),
-                                Container(
-                                  padding: EdgeInsets.symmetric(
-                                      vertical: 16.0, horizontal: 42.5),
-                                  // color: Color(0xFFF5F900),
-                                  child: Text(
-                                    "⭐Task⭐",
-                                    style: TextStyle(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 18,
+                                Expanded(
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.pushNamed(context, "/task");
+                                    },
+                                    child: Container(
+                                      alignment: Alignment.center,
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 16.0),
+                                      // color: Color(0xFFF5F900),
+                                      child: Text(
+                                        "⭐Task⭐",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 18,
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ),
@@ -229,10 +242,8 @@ class _QuizState extends State<Quiz> {
                   child: IconButton(
                 onPressed: () => {
                   // Navigator.pushNamed(context, "/profile")
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (BuildContext context) => QuizQuestions()))
+                  Navigator.pushNamed(context, "/questions",
+                      arguments: {"quiz_length": 10, "current": 1})
                 },
                 padding: EdgeInsets.all(0),
                 iconSize: 32,
@@ -263,121 +274,117 @@ class QuizQuestions extends StatefulWidget {
 }
 
 class _QuizQuestionsState extends State<QuizQuestions> {
-  @override
   var value = 1;
+  @override
   Widget build(BuildContext context) {
     Valuechange(i) {
-      print(i);
-      print(value);
       value = i;
     }
 
+    dynamic args = ModalRoute.of(context)!.settings.arguments;
+    dynamic quiz_len = args["quiz_length"];
+    dynamic question = args["current"];
+
     return Scaffold(
       appBar: AppBar(),
-      body: Center(
-        child: Container(
-          height: 350,
-          width: 360,
-          child: Column(
-            children: [
-              Text("Select the Payment Methods you Want to Use"),
-              SizedBox(
-                height: 10,
-              ),
-              Container(
-                  padding: EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: Color(0xFFFFFFFF),
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: Row(
-                    children: [
-                      Radio(
-                          value: 1,
-                          groupValue: value,
-                          onChanged: (i) {
-                            setState(() {
-                              Valuechange(i);
-                              print(value);
-                            });
-                          }),
-                      Text("Paypal")
-                    ],
-                  )),
-              SizedBox(
-                height: 10,
-              ),
-              Container(
-                  padding: EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: Color(0xFFFFFFFF),
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: Row(
-                    children: [
-                      Radio(
-                          value: 2,
-                          groupValue: value,
-                          onChanged: (i) {
-                            setState(() {
-                              Valuechange(i);
-                              print(value);
-                            });
-                          }),
-                      Text("Paypal")
-                    ],
-                  )),
-              SizedBox(
-                height: 10,
-              ),
-              Container(
-                  padding: EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: Color(0xFFFFFFFF),
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: Row(
-                    children: [
-                      Radio(
-                          value: 3,
-                          groupValue: value,
-                          onChanged: (i) {
-                            setState(() {
-                              Valuechange(i);
-                              print(value);
-                            });
-                          }),
-                      Text("Paypal")
-                    ],
-                  )),
-              SizedBox(
-                height: 10,
-              ),
-              Container(
-                  padding: EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: Color(0xFFFFFFFF),
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: Row(
-                    children: [
-                      Radio(
-                          value: 4,
-                          groupValue: value,
-                          onChanged: (i) {
-                            setState(() {
-                              Valuechange(i);
-                              print(value);
-                            });
-                          }),
-                      Text("Paypal")
-                    ],
-                  )),
-              SizedBox(
-                height: 10,
-              ),
-            ],
-          ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text("Select the Payment Methods you Want to Use"),
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+                padding: EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Color(0xFFFFFFFF),
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Row(
+                  children: [
+                    Radio(
+                        value: 1,
+                        groupValue: value,
+                        onChanged: (i) {
+                          setState(() {
+                            Valuechange(i);
+                          });
+                        }),
+                    Text("Paypal")
+                  ],
+                )),
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+                padding: EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Color(0xFFFFFFFF),
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Row(
+                  children: [
+                    Radio(
+                        value: 2,
+                        groupValue: value,
+                        onChanged: (i) {
+                          setState(() {
+                            Valuechange(i);
+                          });
+                        }),
+                    Text("Paypal")
+                  ],
+                )),
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+                padding: EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Color(0xFFFFFFFF),
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Row(
+                  children: [
+                    Radio(
+                        value: 3,
+                        groupValue: value,
+                        onChanged: (i) {
+                          setState(() {
+                            Valuechange(i);
+                          });
+                        }),
+                    Text("Paypal")
+                  ],
+                )),
+            SizedBox(
+              height: 10,
+            ),
+            Container(
+                padding: EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Color(0xFFFFFFFF),
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Row(
+                  children: [
+                    Radio(
+                        value: 4,
+                        groupValue: value,
+                        onChanged: (i) {
+                          setState(() {
+                            Valuechange(i);
+                          });
+                        }),
+                    Text("Paypal")
+                  ],
+                )),
+            SizedBox(
+              height: 10,
+            ),
+          ],
         ),
       ),
       bottomNavigationBar: Padding(
@@ -391,125 +398,118 @@ class _QuizQuestionsState extends State<QuizQuestions> {
           ),
           child: Row(
             children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 34.5),
-                child: SizedBox(
-                  width: 190,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Next Question",
-                        style: TextStyle(color: Colors.white, fontSize: 18),
-                      ),
-                    ],
-                  ),
+              Expanded(
+                child: Text(
+                  "Next Question",
+                  style: TextStyle(color: Colors.white, fontSize: 18),
+                  textAlign: TextAlign.center,
                 ),
               ),
               Container(
                   child: IconButton(
-                onPressed: () => {
-                  showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        return Dialog(
-                          child: Container(
-                            height: 541,
-                            width: 400,
-                            padding: EdgeInsets.all(40),
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(16)),
-                            child: Column(
-                              children: [
-                                SvgPicture.asset(
-                                  "assets/ICON.svg",
-                                  height: 250,
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Text(
-                                  "10/10",
-                                  style: TextStyle(
-                                      fontSize: 28,
-                                      fontWeight: FontWeight.w700),
-                                ),
-                                SizedBox(
-                                  height: 10,
-                                ),
-                                Text(
-                                  "Congratulations! 🎉 You nailed it",
-                                  style: TextStyle(
-                                    fontSize: 16,
+                onPressed: () {
+                  print(question);
+                  if (quiz_len == question)
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return Dialog(
+                            child: Container(
+                              height: 541,
+                              width: 400,
+                              padding: EdgeInsets.all(40),
+                              decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(16)),
+                              child: Column(
+                                children: [
+                                  SvgPicture.asset(
+                                    "assets/ICON.svg",
+                                    height: 250,
                                   ),
-                                ),
-                                SizedBox(
-                                  height: 60,
-                                ),
-                                Container(
-                                  width: 210,
-                                  child: Container(
-                                    padding: EdgeInsets.symmetric(
-                                        vertical: 6, horizontal: 8),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(70),
-                                      color: Colors.red,
-                                    ),
-                                    child: Row(
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 10),
-                                          child: SizedBox(
-                                            // width: 190,
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: [
-                                                Text(
-                                                  "Next Question",
-                                                  style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 18),
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                        ),
-                                        Container(
-                                            child: IconButton(
-                                          onPressed: () => {
-                                            Navigator.pushReplacement(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (BuildContext
-                                                            context) =>
-                                                        QuizSum()))
-                                          },
-                                          padding: EdgeInsets.all(0),
-                                          iconSize: 32,
-                                          icon: Container(
-                                            padding: EdgeInsets.all(12),
-                                            decoration: BoxDecoration(
-                                                color: Colors.white,
-                                                borderRadius:
-                                                    BorderRadius.circular(50)),
-                                            child: Icon(
-                                              Icons.arrow_forward,
-                                              color: Colors.red,
-                                            ),
-                                          ),
-                                        )),
-                                      ],
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    "10/10",
+                                    style: TextStyle(
+                                        fontSize: 28,
+                                        fontWeight: FontWeight.w700),
+                                  ),
+                                  SizedBox(
+                                    height: 10,
+                                  ),
+                                  Text(
+                                    "Congratulations! 🎉 You nailed it",
+                                    style: TextStyle(
+                                      fontSize: 16,
                                     ),
                                   ),
-                                ),
-                              ],
+                                  SizedBox(
+                                    height: 60,
+                                  ),
+                                  Container(
+                                    // width: 210,
+                                    child: Container(
+                                      padding: EdgeInsets.symmetric(
+                                          vertical: 6, horizontal: 8),
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(70),
+                                        color: Colors.red,
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              "Go Back Home",
+                                              style: TextStyle(
+                                                  color: Colors.white,
+                                                  fontSize: 18),
+                                              textAlign: TextAlign.center,
+                                            ),
+                                          ),
+                                          Container(
+                                              child: IconButton(
+                                            onPressed: () => {
+                                              Navigator.pushReplacement(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                      builder: (BuildContext
+                                                              context) =>
+                                                          QuizSum()))
+                                            },
+                                            padding: EdgeInsets.all(0),
+                                            iconSize: 32,
+                                            icon: Container(
+                                              padding: EdgeInsets.all(12),
+                                              decoration: BoxDecoration(
+                                                  color: Colors.white,
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          50)),
+                                              child: Icon(
+                                                Icons.arrow_forward,
+                                                color: Colors.red,
+                                              ),
+                                            ),
+                                          )),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
                             ),
-                          ),
-                        );
-                      })
+                          );
+                        });
+                  else
+                    Navigator.pushReplacementNamed(context, "/questions",
+                        arguments: {
+                          "quiz_length": quiz_len,
+                          "current": question + 1
+                        });
                 },
                 padding: EdgeInsets.all(0),
                 iconSize: 32,
@@ -547,7 +547,7 @@ class _QuizSumState extends State<QuizSum> {
       body: Padding(
         padding: const EdgeInsets.all(34.0),
         child: Container(
-          height: 650,
+          // height: 650,
           decoration: BoxDecoration(
             color: Color(0xFFFFFFFF),
             borderRadius: BorderRadius.circular(37),
@@ -597,19 +597,11 @@ class _QuizSumState extends State<QuizSum> {
           ),
           child: Row(
             children: [
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 34.5),
-                child: SizedBox(
-                  width: 190,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Return Home",
-                        style: TextStyle(color: Colors.white, fontSize: 18),
-                      ),
-                    ],
-                  ),
+              Expanded(
+                child: Text(
+                  "Return Home",
+                  style: TextStyle(color: Colors.white, fontSize: 18),
+                  textAlign: TextAlign.center,
                 ),
               ),
               Container(
@@ -631,6 +623,162 @@ class _QuizSumState extends State<QuizSum> {
               )),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class QuizTask extends StatefulWidget {
+  const QuizTask({super.key});
+
+  @override
+  State<QuizTask> createState() => _QuizTaskState();
+}
+
+class _QuizTaskState extends State<QuizTask> {
+  File? _image;
+
+  _pickimage(ImageSource source) async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: source);
+
+    if (pickedFile != null) {
+      setState(() {
+        _image = File(pickedFile.path);
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Column(
+              children: [
+                Text("Task Description :",
+                    textAlign: TextAlign.center,
+                    style:
+                        TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+                Text(
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec lobortis ultricies risus tempor viverra. Nunc imperdiet laoreet orci, vel rhoncus augue ornare et. Mauris dictum ante in ultricies tempor. Nullam nulla ex, pulvinar id risus sed, tempus condimentum felis.",
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.grey.shade700)),
+              ],
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text("Upload the task",
+                    style:
+                        TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+                GestureDetector(
+                  onTap: () {
+                    _pickimage(ImageSource.gallery);
+                  },
+                  child: Container(
+                    padding: EdgeInsets.all(32.0),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(16.0),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey,
+                            blurRadius: 2,
+                            spreadRadius: -1,
+                          )
+                        ]),
+                    child: Column(
+                      children: [
+                        Icon(
+                          Icons.cloud_upload,
+                          size: 48,
+                          color: Colors.red,
+                        ),
+                        Text("Click here to upload")
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text("Add a note",
+                    style:
+                        TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
+                Container(
+                  padding: EdgeInsets.all(32.0),
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16.0),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.grey,
+                          blurRadius: 2,
+                          spreadRadius: -1,
+                        )
+                      ]),
+                  child: TextField(
+                    onChanged: (value) {
+                      print(value);
+                    },
+                    minLines: 4,
+                    maxLines: 4,
+                    decoration: InputDecoration(
+                        hintText: "Would you like to add anything ?",
+                        border: InputBorder.none),
+                  ),
+                ),
+              ],
+            ),
+            Container(
+              padding: EdgeInsets.symmetric(vertical: 6, horizontal: 8),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(70),
+                color: Colors.red,
+              ),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      "Done",
+                      style: TextStyle(color: Colors.white, fontSize: 18),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  Container(
+                      child: IconButton(
+                    onPressed: () {
+                      Navigator.popUntil(context, ModalRoute.withName("/"));
+                    },
+                    padding: EdgeInsets.all(0),
+                    iconSize: 32,
+                    icon: Container(
+                      padding: EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(50)),
+                      child: Icon(
+                        Icons.arrow_forward,
+                        color: Colors.red,
+                      ),
+                    ),
+                  )),
+                ],
+              ),
+            )
+          ],
         ),
       ),
     );

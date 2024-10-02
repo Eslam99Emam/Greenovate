@@ -231,9 +231,9 @@ class _LeaderBoardState extends State<LeaderBoard>
 
   @override
   void initState() {
-    super.initState();
     _tabController = TabController(length: 2, vsync: this);
     _pageController = PageController();
+    super.initState();
   }
 
   @override

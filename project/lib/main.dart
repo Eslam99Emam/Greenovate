@@ -40,11 +40,13 @@ class MyApp extends StatelessWidget {
         useMaterial3: true,
       ),
       // home: const MyHomePage(title: 'Flutter Demo Home Page'),
-      initialRoute: "/leaderboard",
+      initialRoute: "/",
       routes: {
         "/leaderboard": (context) => LeaderBoard(),
         "/menu": (context) => Menu(),
         "/profile": (context) => Profile(),
+        "/questions": (context) => QuizQuestions(),
+        "/task": (context) => QuizTask(),
         "/": (context) => Quiz(),
       },
     );
