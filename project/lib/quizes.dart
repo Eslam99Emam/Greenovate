@@ -718,7 +718,7 @@ class _QuizTaskState extends State<QuizTask> {
                     style:
                         TextStyle(fontSize: 18, fontWeight: FontWeight.w600)),
                 Container(
-                  padding: EdgeInsets.all(32.0),
+                  padding: EdgeInsets.all(16.0),
                   decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(16.0),
